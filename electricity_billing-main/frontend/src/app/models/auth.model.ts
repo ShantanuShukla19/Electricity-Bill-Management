@@ -1,0 +1,22 @@
+export interface LoginRequest {
+  userName: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  email: string;
+  userType: string;
+  status: string;
+  message: string;
+  token: string;
+  loginTime: string;
+  customerName?: string;
+}
+
+export interface ApiError {
+  status: number;
+  error: string;
+  message: string;
+  timestamp: string;
+  errors?: { [key: string]: string };
+}

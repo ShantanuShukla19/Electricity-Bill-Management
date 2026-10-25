@@ -1,0 +1,236 @@
+<div class="pay-bill-container">
+  <div class="pay-bill-card">
+    <div class="header-section">
+      <h2>Pay Bill</h2>
+      <p class="subtitle">Pay your pending electricity bills</p>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success">
+      <strong>Success!</strong> {{ successMessage }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-error">
+      <strong>Error!</strong> {{ errorMessage }}
+    </div>
+
+    <!-- Payment Confirmation -->
+    <div *ngIf="paymentResponse" class="payment-confirmation">
+      <div class="confirmation-header">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h3>Payment Successful!</h3>
+      </div>
+      <div class="confirmation-details">
+        <div class="detail-row">
+          <span class="label">Payment ID:</span>
+          <span class="value payment-id">{{ paymentResponse.paymentId }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Bill ID:</span>
+          <span class="value">{{ paymentResponse.billId }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Amount Paid:</span>
+          <span class="value amount">{{ formatCurrency(paymentResponse.amountPaid) }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Payment Status:</span>
+          <span class="value status-success">{{ paymentResponse.paymentStatus }}</span>
+        </div>
+        <div class="detail-row" *ngIf="paymentResponse.transactionReference">
+          <span class="label">Transaction Reference:</span>
+          <span class="value">{{ paymentResponse.transactionReference }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Payment Date:</span>
+          <span class="value">{{ formatDate(paymentResponse.paymentDate) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" *ngIf="!paymentResponse">
+      <!-- Bill ID Input -->
+      <div class="form-group">
+        <label for="billId">Bill ID <span class="required">*</span></label>
+        <div class="input-group">
+          <input
+            type="number"
+            id="billId"
+            formControlName="billId"
+            [class.invalid]="isFieldInvalid('billId')"
+            placeholder="Enter Bill ID"
+            (blur)="onBillIdChange()"
+          />
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="loadBillDetails()"
+            [disabled]="isLoadingBill || !paymentForm.value.billId"
+          >
+            Load Bill
+          </button>
+        </div>
+        <span *ngIf="isFieldInvalid('billId')" class="error-text">
+          {{ getFieldError('billId') }}
+        </span>
+      </div>
+
+      <!-- Bill Details Display -->
+      <div *ngIf="isLoadingBill" class="loading-bill">
+        <div class="spinner-small"></div>
+        <span>Loading bill details...</span>
+      </div>
+
+      <div *ngIf="bill && !isLoadingBill" class="bill-details-card">
+        <h4>Bill Details</h4>
+        <div class="bill-info">
+          <div class="info-row">
+            <span class="info-label">Consumer ID:</span>
+            <span class="info-value">{{ bill.consumerId }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Bill Date:</span>
+            <span class="info-value">{{ formatDate(bill.billDate) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Due Date:</span>
+            <span class="info-value">{{ formatDate(bill.dueDate) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Units Consumed:</span>
+            <span class="info-value">{{ bill.unitsConsumed }} units</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Bill Amount:</span>
+            <span class="info-value amount-highlight">{{ formatCurrency(bill.amount) }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Status:</span>
+            <span class="info-value">
+              <span class="status-badge" [ngClass]="'status-' + bill.status.toLowerCase()">
+                {{ bill.status }}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Amount -->
+      <div class="form-group">
+        <label for="amount">Payment Amount <span class="required">*</span></label>
+        <input
+          type="number"
+          id="amount"
+          formControlName="amount"
+          [class.invalid]="isFieldInvalid('amount')"
+          placeholder="Enter Payment Amount"
+          step="0.01"
+          min="0.01"
+          [max]="maxAmount"
+        />
+        <span *ngIf="isFieldInvalid('amount')" class="error-text">
+          {{ getFieldError('amount') }}
+        </span>
+        <small class="hint" *ngIf="bill">
+          Maximum amount: {{ formatCurrency(bill.amount) }}
+        </small>
+      </div>
+
+      <!-- Payment Method (Card only) -->
+      <div class="form-group">
+        <label for="paymentMethod">Payment Method</label>
+        <select id="paymentMethod" formControlName="paymentMethod" class="select-input" [disabled]="true">
+          <option value="CARD">Card</option>
+        </select>
+        <small class="hint">Payments are accepted only via card.</small>
+      </div>
+
+      <!-- Card Details -->
+      <div class="form-group">
+        <label for="cardNumber">Card Number <span class="required">*</span></label>
+        <input
+          type="text"
+          id="cardNumber"
+          formControlName="cardNumber"
+          [class.invalid]="isFieldInvalid('cardNumber')"
+          placeholder="Enter 13–19 digit card number"
+          maxlength="19"
+          (input)="onCardNumberInput($event)"
+          inputmode="numeric"
+          autocomplete="cc-number"
+        />
+        <span *ngIf="isFieldInvalid('cardNumber')" class="error-text">
+          {{ getFieldError('cardNumber') }}
+        </span>
+        <span *ngIf="paymentForm.get('cardNumber')?.value?.length >= 13 && !isCardNumberValid && paymentForm.get('cardNumber')?.touched" class="error-text">
+          Invalid card number (checksum failed)
+        </span>
+      </div>
+
+      <div class="card-details-row">
+        <div class="form-group">
+          <label for="cardExpiry">Expiry (MM/YY) <span class="required">*</span></label>
+          <input
+            type="text"
+            id="cardExpiry"
+            formControlName="cardExpiry"
+            [class.invalid]="isFieldInvalid('cardExpiry')"
+            placeholder="MM/YY"
+            maxlength="5"
+            (input)="onCardExpiryInput($event)"
+            inputmode="numeric"
+            autocomplete="cc-exp"
+          />
+          <span *ngIf="isFieldInvalid('cardExpiry')" class="error-text">
+            {{ getFieldError('cardExpiry') }}
+          </span>
+        </div>
+        <div class="form-group">
+          <label for="cardCvv">CVV <span class="required">*</span></label>
+          <input
+            type="password"
+            id="cardCvv"
+            formControlName="cardCvv"
+            [class.invalid]="isFieldInvalid('cardCvv')"
+            placeholder="3 or 4 digits"
+            maxlength="4"
+            (input)="onCardCvvInput($event)"
+            inputmode="numeric"
+            autocomplete="cc-csc"
+          />
+          <span *ngIf="isFieldInvalid('cardCvv')" class="error-text">
+            {{ getFieldError('cardCvv') }}
+          </span>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isLoading || paymentForm.invalid || !bill || bill.status === 'PAID'"
+        >
+          <span *ngIf="!isLoading">Pay Bill</span>
+          <span *ngIf="isLoading">Processing Payment...</span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="paymentForm.reset(); bill = null; errorMessage = ''; successMessage = ''; paymentResponse = null"
+          [disabled]="isLoading"
+        >
+          Reset
+        </button>
+      </div>
+    </form>
+
+    <div class="footer-links">
+      <p><a routerLink="/bills">View All Bills</a></p>
+      <p><a routerLink="/home">Back to Home</a></p>
+    </div>
+  </div>
+</div>
