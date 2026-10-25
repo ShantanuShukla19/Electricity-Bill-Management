@@ -3,7 +3,6 @@
 > A production-ready, full-stack microservices application for electricity billing management
 
 [!\[Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.0-brightgreen)](https://spring.io/projects/spring-boot)
-[!\[Angular](https://img.shields.io/badge/Angular-18.0-red)](https://angular.io/)
 [!\[Java](https://img.shields.io/badge/Java-17-orange)](https://www.oracle.com/java/)
 [!\[License](https://img.shields.io/badge/License-Educational-blue)](LICENSE)
 
@@ -36,7 +35,7 @@ A comprehensive **microservices-based** electricity billing management system fe
 
 ### Frontend
 
-* Angular 18, TypeScript 5.4
+* React JS, TypeScript 5.4
 * RxJS, HTTP Interceptors
 * Route Guards, Reactive Forms
 
@@ -144,7 +143,7 @@ npm start
 ## 🎯 Project Structure
 
 ```
-electricity\\\_billing/
+electricity\\\\\\\_billing/
 ├── backend/
 │   ├── eureka-server/          # Service discovery (8761)
 │   ├── api-gateway/            # API Gateway (8080)
@@ -159,14 +158,14 @@ electricity\\\_billing/
 │       ├── models/             # TypeScript models
 │       ├── guards/             # Route guards
 │       ├── interceptors/       # HTTP interceptors
-│       └── \\\[components]/       # UI components
+│       └── \\\\\\\[components]/       # UI components
 ├── .vscode/
 │   ├── tasks.json              # VS Code tasks (platform-independent)
 │   ├── QUICKSTART.md           # Quick start guide
 │   ├── PLATFORM-SETUP.md       # Setup for all platforms
-│   └── \\\[other guides]/         # Additional documentation
+│   └── \\\\\\\[other guides]/         # Additional documentation
 ├── INTERVIEW-README.md         # Technical documentation
-├── INTERVIEW-CHEATSHEET.md     # Interview Q\\\&A
+├── INTERVIEW-CHEATSHEET.md     # Interview Q\\\\\\\&A
 └── README.md                   # This file
 ```
 
@@ -295,16 +294,6 @@ See [H2-CONSOLE-ACCESS.md](./.vscode/H2-CONSOLE-ACCESS.md) for details.
 
 \---
 
-## 📖 Learning Resources
-
-This project was built using:
-
-* [Spring Boot Documentation](https://spring.io/projects/spring-boot)
-* [Spring Cloud Documentation](https://spring.io/projects/spring-cloud)
-* [Angular Documentation](https://angular.io/docs)
-* [Netflix Eureka Wiki](https://github.com/Netflix/eureka/wiki)
-* [JWT Introduction](https://jwt.io/introduction)
-
 \---
 
 ## 📄 License
@@ -333,6 +322,4 @@ For questions or feedback, please reach out via:
 * LinkedIn: \[Your LinkedIn]
 
 \---
-
-
 
