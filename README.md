@@ -9,14 +9,6 @@
 
 \---
 
-## 🚀 Quick Links
-
-* [**Interview README**](./INTERVIEW-README.md) - Complete technical documentation for interviews
-* [**Interview Cheat Sheet**](./INTERVIEW-CHEATSHEET.md) - Quick reference Q\&A for interviews
-* [**Quick Start Guide**](./.vscode/QUICKSTART.md) - Get started in 5 minutes
-* [**Platform Setup**](./.vscode/PLATFORM-SETUP.md) - Windows/macOS/Linux setup
-* [**Database Documentation**](./backend/DATABASE.md) - H2 database guide
-
 \---
 
 ## 📋 Overview
@@ -28,7 +20,7 @@ A comprehensive **microservices-based** electricity billing management system fe
 * 🌐 **API Gateway** for centralized routing
 * 🔍 **Service Discovery** using Netflix Eureka
 * 💾 **Persistent H2 Databases** (database per service)
-* 🎨 **Modern Angular SPA** with reactive programming
+* 🎨 **React JS** for frontend
 
 \---
 
@@ -53,7 +45,7 @@ A comprehensive **microservices-based** electricity billing management system fe
 ## 🏗️ Architecture
 
 ```
-Frontend (Angular)
+Frontend (React)
        ↓
 API Gateway :8080
        ↓
@@ -64,8 +56,6 @@ Auth :8081  Users    Billing   Payments
 ```
 
 All services register with **Eureka :8761** for service discovery.
-
-See [INTERVIEW-README.md](./INTERVIEW-README.md) for detailed architecture.
 
 \---
 
@@ -109,24 +99,7 @@ npm start
 * Eureka: http://localhost:8761
 * API Gateway: http://localhost:8080
 
-See [QUICKSTART.md](./.vscode/QUICKSTART.md) for detailed instructions.
-
 \---
-
-## 📚 Documentation
-
-### For Interviews
-
-* [**INTERVIEW-README.md**](./INTERVIEW-README.md) - Complete technical overview
-* [**INTERVIEW-CHEATSHEET.md**](./INTERVIEW-CHEATSHEET.md) - Q\&A preparation
-
-### For Development
-
-* [**QUICKSTART.md**](./.vscode/QUICKSTART.md) - Get started quickly
-* [**PLATFORM-SETUP.md**](./.vscode/PLATFORM-SETUP.md) - Cross-platform setup
-* [**HOWTO-RUN-BACKEND.md**](./.vscode/HOWTO-RUN-BACKEND.md) - Backend details
-* [**DATABASE.md**](./backend/DATABASE.md) - Database documentation
-* [**H2-CONSOLE-ACCESS.md**](./.vscode/H2-CONSOLE-ACCESS.md) - H2 console guide
 
 ### Architecture
 
@@ -171,7 +144,7 @@ See [QUICKSTART.md](./.vscode/QUICKSTART.md) for detailed instructions.
 ## 🎯 Project Structure
 
 ```
-electricity\_billing/
+electricity\\\_billing/
 ├── backend/
 │   ├── eureka-server/          # Service discovery (8761)
 │   ├── api-gateway/            # API Gateway (8080)
@@ -186,14 +159,14 @@ electricity\_billing/
 │       ├── models/             # TypeScript models
 │       ├── guards/             # Route guards
 │       ├── interceptors/       # HTTP interceptors
-│       └── \[components]/       # UI components
+│       └── \\\[components]/       # UI components
 ├── .vscode/
 │   ├── tasks.json              # VS Code tasks (platform-independent)
 │   ├── QUICKSTART.md           # Quick start guide
 │   ├── PLATFORM-SETUP.md       # Setup for all platforms
-│   └── \[other guides]/         # Additional documentation
+│   └── \\\[other guides]/         # Additional documentation
 ├── INTERVIEW-README.md         # Technical documentation
-├── INTERVIEW-CHEATSHEET.md     # Interview Q\&A
+├── INTERVIEW-CHEATSHEET.md     # Interview Q\\\&A
 └── README.md                   # This file
 ```
 
@@ -345,7 +318,7 @@ This project is for educational and portfolio purposes.
 Built with:
 
 * Spring Framework Team
-* Angular Team
+* React Team
 * Netflix OSS (Eureka)
 * Open Source Community
 
@@ -361,7 +334,5 @@ For questions or feedback, please reach out via:
 
 \---
 
-**⭐ Star this repo if you find it useful for learning microservices!**
 
-**Last Updated:** January 2026
 
